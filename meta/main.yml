@@ -1,0 +1,23 @@
+---
+galaxy_info:
+  role_name: iscsi_initiator
+  author: ricsanfre
+  description: Configure iSCSI intiator role
+
+  license: license (MIT)
+
+  min_ansible_version: 2.1
+
+  platforms:
+    - name: Ubuntu
+      versions:
+        - focal
+        - xenial
+        - bionic
+
+  galaxy_tags:
+    - system
+    - disk
+    - iscsi
+
+dependencies: []

@@ -1,0 +1,49 @@
+---
+# defaults vars file
+
+# initiator iqn
+open_iscsi_initiator_name: "iqn.2021-07.com.ricsanfre:{{ ansible_facts['nodename'] }}"
+
+open_iscsi_targets: []
+# open_iscsi_targets:
+#   - name: '{{ ansible_hostname }}'
+#     discover: true
+#     automatic: true
+#     portal: 'node0.{{ pri_domain_name }}'
+#     target: 'iqn.2001-04.org.example:storage.{{ ansible_hostname }}'
+#     login: true
+
+# open-iscsi configuration
+open_iscsi_automatic_startup: false
+open_iscsi_leading_login: false
+
+# Authentication
+open_iscsi_authentication: false
+open_iscsi_auth_username: ''
+open_iscsi_auth_password: ''
+open_iscsi_auth_username_in: ''
+
+# Timeoust
+open_iscsi_replacement_timeout: 120
+open_iscsi_login_timeout: 15
+open_iscsi_logout_timeout: 15
+open_iscsi_noop_out_interval: 5
+open_iscsi_noop_out_timeout: 5
+open_iscsi_abort_timeout: 15
+open_iscsi_lu_reset_timeout: 30
+open_iscsi_tgt_reset_timeout: 30
+
+open_iscsi_initial_login_retry_max: 8
+open_iscsi_cmds_max: 128
+open_iscsi_queue_depth: 32
+open_iscsi_thread_priority: -20
+
+open_iscsi_initialR2T: false
+open_iscsi_immediate_data: true
+open_iscsi_first_burst_length: 262144
+open_iscsi_max_burst_length: 16776192
+open_iscsi_max_recv_length: 262144
+open_iscsi_max_xmit_length: 0
+open_iscsi_discovery_max_recv_length: 32768
+open_iscsi_nr_sessions: 1
+open_iscsi_fast_abort: true

@@ -1,0 +1,5 @@
+---
+# vars file for ricsanfre.iscsi-initiator
+
+iscsi_packages:
+  - open-iscsi

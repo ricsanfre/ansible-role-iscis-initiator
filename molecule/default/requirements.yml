@@ -1,0 +1,4 @@
+---
+roles:
+  - ricsanfre.storage
+  - ricsanfre.iscsi_target
