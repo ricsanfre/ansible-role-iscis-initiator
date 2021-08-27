@@ -49,3 +49,5 @@ open_iscsi_max_xmit_length: 0
 open_iscsi_discovery_max_recv_length: 32768
 open_iscsi_nr_sessions: 1
 open_iscsi_fast_abort: true
+
+open_iscsi_automatic_scan: true

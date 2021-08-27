@@ -55,3 +55,5 @@ node.conn[0].iscsi.MaxXmitDataSegmentLength = {{ open_iscsi_max_xmit_length }}
 discovery.sendtargets.iscsi.MaxRecvDataSegmentLength = {{ open_iscsi_discovery_max_recv_length }}
 node.session.nr_sessions = {{ open_iscsi_nr_sessions }}
 node.session.iscsi.FastAbort = {% if open_iscsi_fast_abort %}Yes{% else %}No{% endif %}
+
+node.session.scan = {% if open_iscsi_automatic_scan %}auto{% else %}manual{% endif %}
