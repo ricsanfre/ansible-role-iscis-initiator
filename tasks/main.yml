@@ -7,6 +7,9 @@
 - name: Set initiator name
   template:
     src: initiatorname.iscsi.j2
+    owner: root
+    group: root
+    mode: 0600
     dest: /etc/iscsi/initiatorname.iscsi
   notify: Restart iscsid
 
@@ -14,18 +17,31 @@
   template:
     src: iscsid.conf.j2
     dest: /etc/iscsi/iscsid.conf
+    owner: root
+    group: root
+    mode: 0600
+    backup: true
   notify: Restart iscsid
 
 - name: Enable iscsid service
   service:
     name: iscsid
-    enable: true
+    enabled: true
+
+- name: If config has changed force iscsid restart befor discovery new targets
+  meta: flush_handlers
 
 - name: config_targets | discovering targets
   open_iscsi:
     discover: "{{ item.discover }}"
     portal: "{{ item.portal }}"
+    show_nodes: true
+  register: discovery_targets
   with_items: '{{ open_iscsi_targets }}'
+
+- name: Discovered targets
+  debug:
+    msg: "Discovered targets: {{ discovery_targets.results }}"
 
 - name: config_targets | configuring targets
   open_iscsi:
@@ -33,4 +49,5 @@
     login: "{{ item.login }}"
     portal: "{{ item.portal }}"
     target: "{{ item.target|default(omit) }}"
+    auto_portal_startup: true
   with_items: '{{ open_iscsi_targets }}'

@@ -1,6 +1,6 @@
 ---
 - name: Configure iscsi-server
-  hosts: iscis-target
+  hosts: iscsi-target
   become: true
   gather_facts: true
   vars:
@@ -28,7 +28,7 @@
         vg: vg_iscsi
         size: 100
     iscsi_targets:
-      - name: "iqn.2021-07.com.ricsanfre:{{ ansible_facts['nodename'] }}"
+      - name: iqn.2021-07.com.ricsanfre:iscsi-target
         disks:
           - name: lun_node1
             path: /dev/vg_iscsi/vg_iscsi_lv_node1
@@ -47,10 +47,12 @@
             type: block
             lunid: 3
         initiators:
-          - name: iqn.2021-07.com.ricsanfre:node1
+          - name: iqn.2021-07.com.ricsanfre:iscsi-initiator
             authentication:
-              userid: node1
-              password: passwd1
+              userid: iqn.2021-07.com.ricsanfre:iscsi-initiator
+              password: s1cret0
+              userid_mutual: iqn.2021-07.com.ricsanfre:iscsi-target
+              password_mutual: 0tr0s1cret0
             mapped_luns:
               - mapped_lunid: 0
                 lunid: 0
@@ -67,16 +69,31 @@
                 lunid: 3
                 write_protect: 1
         portals:
-          - ip: "{{ ansible_default_ipv4.address | default(ansible_all_ipv4_addresses[0]) }}"
+          - ip: 192.168.0.11
 
   roles:
     - ricsanfre.storage
-    - ricsanfre.iscsi-target
+    - ricsanfre.iscsi_target
 
 - name: Configure iscsi-client
-  hosts: iscis-initiator
+  hosts: iscsi-initiator
   become: true
   gather_facts: true
-
+  vars:
+    open_iscsi_initiator_name: iqn.2021-07.com.ricsanfre:iscsi-initiator
+    open_iscsi_authentication: true
+    open_iscsi_auth_username: iqn.2021-07.com.ricsanfre:iscsi-initiator
+    open_iscsi_auth_password: s1cret0
+    open_iscsi_auth_username_in: iqn.2021-07.com.ricsanfre:iscsi-target
+    open_iscsi_auth_password_in: 0tr0s1cret0
+    open_iscsi_automatic_startup: true
+    open_iscsi_targets:
+      - name: iscsi-target
+        discover: true
+        auto_portal_startup: true
+        auto_node_startup: true
+        portal: 192.168.0.11
+        target: iqn.2021-07.com.ricsanfre:iscsi-target
+        login: true
   roles:
     - ricsanfre.iscsi_initiator
