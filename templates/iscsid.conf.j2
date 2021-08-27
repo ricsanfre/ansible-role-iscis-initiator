@@ -12,14 +12,14 @@ node.leading_login = {% if open_iscsi_leading_login %}Yes{% else %}No{% endif %}
 {% if open_iscsi_authentication %}
 # Authentication to login into targets
 node.session.auth.authmethod = CHAP
-	{% if open_iscsi_auth_username is defined and open_iscsi_auth_password is defined -%}
+{% if open_iscsi_auth_username is defined and open_iscsi_auth_password is defined -%}
 node.session.auth.username = {{ open_iscsi_auth_username }}
 node.session.auth.password = {{ open_iscsi_auth_password }}
-	{% endif %}
-	{% if open_iscsi_auth_username_in is defined and open_iscsi_auth_password_in is defined -%}
+{% endif %}
+{% if open_iscsi_auth_username_in is defined and open_iscsi_auth_password_in is defined -%}
 node.session.auth.username_in = {{ open_iscsi_auth_username_in }}
 node.session.auth.password_in = {{ open_iscsi_auth_password_in }}
-	{% endif %}
+{% endif %}
 {% endif %}
 
 
@@ -44,7 +44,7 @@ node.session.queue_depth = {{ open_iscsi_queue_depth }}
 node.session.xmit_thread_priority = {{ open_iscsi_thread_priority }}
 
 # iSCSI settings
-node.session.iscsi.InitialR2T = {% if open_iscsi_initialR2T %}Yes{% else %}No{% endif %}
+node.session.iscsi.InitialR2T = {% if open_iscsi_initialr2t %}Yes{% else %}No{% endif %}
 
 node.session.iscsi.ImmediateData = {% if open_iscsi_immediate_data %}Yes{% else %}No{% endif %}
 

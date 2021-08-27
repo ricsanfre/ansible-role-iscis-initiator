@@ -8,9 +8,10 @@ open_iscsi_targets: []
 # open_iscsi_targets:
 #   - name: '{{ ansible_hostname }}'
 #     discover: true
-#     automatic: true
-#     portal: 'node0.{{ pri_domain_name }}'
-#     target: 'iqn.2001-04.org.example:storage.{{ ansible_hostname }}'
+#     auto_portal_startup: true
+#     auto_node_startup: true
+#     portal: '196.168.0.1'
+#     target: 'iqn.2001-04.org.example:target'
 #     login: true
 
 # open-iscsi configuration
@@ -22,6 +23,7 @@ open_iscsi_authentication: false
 open_iscsi_auth_username: ''
 open_iscsi_auth_password: ''
 open_iscsi_auth_username_in: ''
+open_iscsi_auth_password_in: ''
 
 # Timeoust
 open_iscsi_replacement_timeout: 120
@@ -38,7 +40,7 @@ open_iscsi_cmds_max: 128
 open_iscsi_queue_depth: 32
 open_iscsi_thread_priority: -20
 
-open_iscsi_initialR2T: false
+open_iscsi_initialr2t: false
 open_iscsi_immediate_data: true
 open_iscsi_first_burst_length: 262144
 open_iscsi_max_burst_length: 16776192

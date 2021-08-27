@@ -3,4 +3,4 @@
   service:
     name: iscsid
     state: restarted
-    enabled: True
+    enabled: true
