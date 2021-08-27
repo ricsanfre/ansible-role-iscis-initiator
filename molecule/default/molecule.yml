@@ -16,11 +16,20 @@ platforms:
     memory: 1024
     provider_raw_config_args:
       - "storage :file, :size => '1G', :device => 'vdb'"
+    interfaces:
+      - network_name: private_network
+        type: static
+        ip: 192.168.0.1
+        auto_config: true
   - name: iscsi-initiator
     box: generic/ubuntu2004
     cpu: 1
     memory: 512
-    
+    interfaces:
+      - network_name: private_network
+        type: static
+        ip: 192.168.0.2
+        auto_config: true
 provisioner:
   name: ansible
   playbooks:
