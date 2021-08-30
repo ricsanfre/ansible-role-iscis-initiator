@@ -97,3 +97,40 @@
         login: true
   roles:
     - ricsanfre.iscsi_initiator
+  tasks:
+    - name: get iSCSI disks
+      shell: "lsblk -S  | grep iscsi | cut -d' ' -f1"
+      register: command
+    - debug:
+        var: command
+    - name: set disks_variables
+      set_fact:
+        iscsi_disks: "{{ iscsi_disks|default([]) + [  '/dev/' + item  ] }}"
+      with_items: "{{ command.stdout_lines }}"
+    - name: set storage configuration
+      set_fact:
+        storage_volumegroups:
+          - name: vg_iscsi
+            devices: "{{ iscsi_disks }}"
+        storage_volumes:
+          - name: vg_iscsi_lv_node1
+            vg: vg_iscsi
+            size: 150
+        storage_filesystems:
+          - name: /dev/vg_iscsi/vg_iscsi_lv_node1
+            filesystem: ext4
+        storage_mounts:
+          - name: /data
+            src: /dev/vg_iscsi/vg_iscsi_lv_node1
+            owner: root
+            group: root
+            mode: "0755"
+            opts: _netdev
+            boot: true
+            dump: 0
+            passno: 2
+      when: iscsi_disks is defined
+    - name: Include storage role
+      include_role:
+        name: ricsanfre.storage
+      when: iscsi_disks is defined
