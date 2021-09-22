@@ -1,7 +1,9 @@
 Ansible Role: iSCSI Initiator
 =========
 
-This role configure a linux server as iSCSI initiator using `open-iscsi`
+This role configure a linux server as iSCSI initiator using `open-iscsi`.
+
+This role introduces a modification into [open-iscsi community module](https://docs.ansible.com/ansible/latest/collections/community/general/open_iscsi_module.html) to enable mutual authentication. Modified module is located in `library/open_iscsi.py`.
 
 
 Requirements
@@ -25,7 +27,6 @@ open_iscsi_initiator_name: "iqn.2021-07.com.ricsanfre:{{ ansible_facts['nodename
 
 ```yml
 # open-iscsi configuration
-open_iscsi_automatic_startup: false
 open_iscsi_initiator_name: iqn.2021-07.com.ricsanfre:iscsi-initiator
 open_iscsi_authentication: true
 open_iscsi_auth_username: iqn.2021-07.com.ricsanfre:iscsi-initiator
@@ -58,7 +59,9 @@ None.
 Example Playbook
 ----------------
 
-This example use `ricsanfre.storage` role for creating the logical volumes used to configure the iSCSI target
+This example use `ricsanfre.storage` role for creating the logical volumes used to configure the iSCSI target.
+
+The example also shows how to use specific authentication method and credentials per target.
 
 ```yml
 - name: Configure iscsi-client
@@ -66,12 +69,7 @@ This example use `ricsanfre.storage` role for creating the logical volumes used 
   become: true
   gather_facts: true
   vars:
-    open_iscsi_initiator_name: iqn.2021-07.com.ricsanfre:iscsi-initiator
     open_iscsi_authentication: true
-    open_iscsi_auth_username: iqn.2021-07.com.ricsanfre:iscsi-initiator
-    open_iscsi_auth_password: s1cret0
-    open_iscsi_auth_username_in: iqn.2021-07.com.ricsanfre:iscsi-target
-    open_iscsi_auth_password_in: 0tr0s1cret0
     open_iscsi_automatic_startup: true
     open_iscsi_targets:
       - name: iscsi-target
@@ -81,6 +79,11 @@ This example use `ricsanfre.storage` role for creating the logical volumes used 
         portal: 192.168.0.11
         target: iqn.2021-07.com.ricsanfre:iscsi-target
         login: true
+        node_auth: CHAP
+        node_user: iqn.2021-07.com.ricsanfre:iscsi-initiator
+        node_pass: s1cret0
+        node_user_in: iqn.2021-07.com.ricsanfre:iscsi-target
+        node_pass_in: 0tr0s1cret0
   roles:
     - ricsanfre.iscsi_initiator
 ```

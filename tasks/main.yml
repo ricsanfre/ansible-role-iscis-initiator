@@ -50,4 +50,9 @@
     portal: "{{ item.portal }}"
     target: "{{ item.target|default(omit) }}"
     auto_portal_startup: true
+    node_auth: "{{ item.node_auth|default(omit) }}"
+    node_user: "{{ item.node_user|default(omit) }}"
+    node_pass: "{{ item.node_pass|default(omit) }}"
+    node_user_in: "{{ item.node_user_in|default(omit) }}"
+    node_pass_in: "{{ item.node_pass_in|default(omit) }}"
   with_items: '{{ open_iscsi_targets }}'
